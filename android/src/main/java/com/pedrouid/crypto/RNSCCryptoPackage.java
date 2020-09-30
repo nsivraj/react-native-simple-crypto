@@ -11,16 +11,16 @@ import com.facebook.react.bridge.NativeModule;
 import com.facebook.react.bridge.ReactApplicationContext;
 import com.facebook.react.uimanager.ViewManager;
 
-public class RCTCryptoPackage implements ReactPackage {
+public class RNSCCryptoPackage implements ReactPackage {
     @Override
     public List<NativeModule> createNativeModules(ReactApplicationContext reactContext) {
         return Arrays.<NativeModule>asList(
-                new RCTAes(reactContext),
-                new RCTSha(reactContext),
-                new RCTHmac(reactContext),
-                new RCTPbkdf2(reactContext),
-                new RCTRsa(reactContext),
-                new RandomBytesModule(reactContext)
+                new RNSCAes(reactContext),
+                new RNSCSha(reactContext),
+                new RNSCHmac(reactContext),
+                new RNSCPbkdf2(reactContext),
+                new RNSCRsa(reactContext),
+                new RNSCRandomBytes(reactContext)
         );
     }
 

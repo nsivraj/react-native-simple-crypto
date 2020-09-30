@@ -66,15 +66,15 @@ const convertArrayBufferToHex = hexLite.fromBuffer;
 const convertHexToArrayBuffer = hexLite.toBuffer;
 
 async function randomBytes(length) {
-  return convertBase64ToArrayBuffer(await NativeModules.RNRandomBytes.randomBytes(length));
+  return convertBase64ToArrayBuffer(await NativeModules.RNSCRandomBytes.randomBytes(length));
 }
 
 async function SHAWrapper(data, algorithm) {
   if (typeof data === 'string') {
-    return NativeModules.Sha.shaUtf8(data, algorithm);
+    return NativeModules.RNSCSha.shaUtf8(data, algorithm);
   } else {
     const dataBase64 = convertArrayBufferToBase64(data);
-    const result = await NativeModules.Sha.shaBase64(dataBase64, algorithm);
+    const result = await NativeModules.RNSCSha.shaBase64(dataBase64, algorithm);
 
     return convertBase64ToArrayBuffer(result);
   }
@@ -85,13 +85,13 @@ const AES = {
     const textBase64 = convertArrayBufferToBase64(textArrayBuffer);
     const keyHex = convertArrayBufferToHex(keyArrayBuffer);
     const ivHex = convertArrayBufferToHex(ivArrayBuffer);
-    return convertBase64ToArrayBuffer(await NativeModules.Aes.encrypt(textBase64, keyHex, ivHex));
+    return convertBase64ToArrayBuffer(await NativeModules.RNSCAes.encrypt(textBase64, keyHex, ivHex));
   },
   decrypt: async function (cipherTextArrayBuffer, keyArrayBuffer, ivArrayBuffer) {
     const cipherTextBase64 = convertArrayBufferToBase64(cipherTextArrayBuffer);
     const keyHex = convertArrayBufferToHex(keyArrayBuffer);
     const ivHex = convertArrayBufferToHex(ivArrayBuffer);
-    return convertBase64ToArrayBuffer(await NativeModules.Aes.decrypt(cipherTextBase64, keyHex, ivHex));
+    return convertBase64ToArrayBuffer(await NativeModules.RNSCAes.decrypt(cipherTextBase64, keyHex, ivHex));
   }
 };
 
@@ -105,7 +105,7 @@ const HMAC = {
   hmac256: async function (textArrayBuffer, keyArrayBuffer) {
     const textHex = convertArrayBufferToHex(textArrayBuffer);
     const keyHex = convertArrayBufferToHex(keyArrayBuffer);
-    const signatureHex = await NativeModules.Hmac.hmac256(textHex, keyHex);
+    const signatureHex = await NativeModules.RNSCHmac.hmac256(textHex, keyHex);
     return convertHexToArrayBuffer(signatureHex);
   }
 };
@@ -123,7 +123,7 @@ const PBKDF2 = {
       saltToHash = convertUtf8ToArrayBuffer(salt);
     }
 
-    const digest = await NativeModules.Pbkdf2.hash(
+    const digest = await NativeModules.RNSCPbkdf2.hash(
       convertArrayBufferToBase64(passwordToHash),
       convertArrayBufferToBase64(saltToHash),
       iterations,
@@ -135,7 +135,7 @@ const PBKDF2 = {
   }
 };
 
-const RSA = NativeModules.Rsa;
+const RSA = NativeModules.RNSCRsa;
 
 const utils = {
   randomBytes,

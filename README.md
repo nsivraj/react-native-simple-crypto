@@ -61,14 +61,14 @@ dependencies {
 
 ```java
 ......
-import com.pedrouid.crypto.RCTCryptoPackage;
+import com.pedrouid.crypto.RNSCCryptoPackage;
 
 ......
 
 @Override
 protected List<ReactPackage> getPackages() {
    ......
-   new RCTCryptoPackage(),
+   new RNSCCryptoPackage(),
    ......
 }
 ```
