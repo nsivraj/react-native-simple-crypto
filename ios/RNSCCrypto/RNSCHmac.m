@@ -1,7 +1,7 @@
-#import "RCTHmac.h"
+#import "RNSCHmac.h"
 #import "Hmac.h"
 
-@implementation RCTHmac
+@implementation RNSCHmac
 
 RCT_EXPORT_MODULE()
 

@@ -1,7 +1,7 @@
-#import "RCTAes.h"
+#import "RNSCAes.h"
 #import "Aes.h"
 
-@implementation RCTAes
+@implementation RNSCAes
 
 RCT_EXPORT_MODULE()
 

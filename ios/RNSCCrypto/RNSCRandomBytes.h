@@ -1,5 +1,5 @@
 //
-//  RNRandomBytes.h
+//  RNSCRandomBytes.h
 //  randombytes
 //
 //  Created by Mark Vayngrib on 10/13/15.
@@ -16,6 +16,6 @@
 #endif
 
 
-@interface RNRandomBytes : NSObject<RCTBridgeModule>
+@interface RNSCRandomBytes : NSObject<RCTBridgeModule>
 
 @end

@@ -1,7 +1,7 @@
-#import "RCTSha.h"
+#import "RNSCSha.h"
 #import "Sha.h"
 
-@implementation RCTSha
+@implementation RNSCSha
 
 RCT_EXPORT_MODULE()
  
