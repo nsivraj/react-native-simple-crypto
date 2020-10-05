@@ -13,18 +13,18 @@ import com.facebook.react.bridge.Promise;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 
-public class RCTRsa extends ReactContextBaseJavaModule {
+public class RNSCRsa extends ReactContextBaseJavaModule {
 
   private final ReactApplicationContext reactContext;
 
-  public RCTRsa(ReactApplicationContext reactContext) {
+  public RNSCRsa(ReactApplicationContext reactContext) {
     super(reactContext);
     this.reactContext = reactContext;
   }
 
   @Override
   public String getName() {
-    return "RCTRsa";
+    return "RNSCRsa";
   }
 
   private String getAlgorithmFromHash(final String hash) {

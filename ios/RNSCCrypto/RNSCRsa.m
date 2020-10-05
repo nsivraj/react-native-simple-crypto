@@ -1,11 +1,11 @@
-#import "RCTRsa.h"
+#import "RNSCRsa.h"
 #import "Rsa.h"
 
-@interface RCTRsa()
+@interface RNSCRsa()
 + (SecKeyAlgorithm)getAlgorithmFromHash:(NSString *)hash;
 @end
 
-@implementation RCTRsa
+@implementation RNSCRsa
 
 - (dispatch_queue_t)methodQueue {
     return dispatch_get_main_queue();
@@ -99,7 +99,7 @@ RCT_EXPORT_METHOD(sign:(NSString *)message withKey:(NSString *)key andHash:(NSSt
         NSError *error = nil;
         Rsa *rsa = [[Rsa alloc] init];
         rsa.privateKey = key;
-        NSString *signature = [rsa sign:message withAlgorithm:[RCTRsa getAlgorithmFromHash:hash] andError:&error];
+        NSString *signature = [rsa sign:message withAlgorithm:[RNSCRsa getAlgorithmFromHash:hash] andError:&error];
         if (error != nil) {
             reject(@"error", error.localizedDescription, error);
         } else {
@@ -114,7 +114,7 @@ RCT_EXPORT_METHOD(sign64:(NSString *)message withKey:(NSString *)key andHash:(NS
         NSError *error = nil;
         Rsa *rsa = [[Rsa alloc] init];
         rsa.privateKey = key;
-        NSString *signature = [rsa sign64:message withAlgorithm:[RCTRsa getAlgorithmFromHash:hash] andError:&error];
+        NSString *signature = [rsa sign64:message withAlgorithm:[RNSCRsa getAlgorithmFromHash:hash] andError:&error];
         if (error != nil) {
             reject(@"error", error.localizedDescription, error);
         } else {
@@ -128,7 +128,7 @@ RCT_EXPORT_METHOD(verify:(NSString *)signature withMessage:(NSString *)message a
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         Rsa *rsa = [[Rsa alloc] init];
         rsa.publicKey = key;
-        BOOL valid = [rsa verify:signature withMessage:message andAlgorithm:[RCTRsa getAlgorithmFromHash:hash]];
+        BOOL valid = [rsa verify:signature withMessage:message andAlgorithm:[RNSCRsa getAlgorithmFromHash:hash]];
         resolve(@(valid));
     });
 }
@@ -138,7 +138,7 @@ RCT_EXPORT_METHOD(verify64:(NSString *)signature withMessage:(NSString *)message
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         Rsa *rsa = [[Rsa alloc] init];
         rsa.publicKey = key;
-        BOOL valid = [rsa verify64:signature withMessage:message andAlgorithm:[RCTRsa getAlgorithmFromHash:hash]];
+        BOOL valid = [rsa verify64:signature withMessage:message andAlgorithm:[RNSCRsa getAlgorithmFromHash:hash]];
         resolve(@(valid));
     });
 }

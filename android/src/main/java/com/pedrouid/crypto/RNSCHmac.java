@@ -4,8 +4,6 @@ import android.widget.Toast;
 
 import java.io.IOException;
 import java.security.SecureRandom;
-import java.util.Arrays;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,6 +29,7 @@ import org.spongycastle.crypto.digests.SHA1Digest;
 import org.spongycastle.crypto.digests.SHA224Digest;
 import org.spongycastle.crypto.digests.SHA256Digest;
 import org.spongycastle.crypto.digests.SHA384Digest;
+import org.spongycastle.crypto.digests.SHA384Digest;
 import org.spongycastle.crypto.digests.SHA512Digest;
 import org.spongycastle.crypto.generators.PKCS5S2ParametersGenerator;
 import org.spongycastle.crypto.PBEParametersGenerator;
@@ -47,49 +46,35 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.Callback;
 
-public class RCTSha extends ReactContextBaseJavaModule {
+public class RNSCHmac extends ReactContextBaseJavaModule {
 
-    public RCTSha(ReactApplicationContext reactContext) {
+    public static final String HMAC_SHA_256 = "HmacSHA256";
+
+    public RNSCHmac(ReactApplicationContext reactContext) {
         super(reactContext);
     }
 
-    private static ArrayList<String> algorithms = new ArrayList<String>(
-            Arrays.asList("SHA-1",
-                    "SHA-256",
-                    "SHA-512"));
-
     @Override
     public String getName() {
-        return "RCTSha";
-    }
-
-    private byte[] sha(byte[] data, String algorithm) throws Exception {
-        if (!algorithms.contains(algorithm)) {
-            throw new Exception("Invalid algorithm");
-        }
-
-        MessageDigest md = MessageDigest.getInstance(algorithm);
-        md.update(data);
-        return md.digest();
+        return "RNSCHmac";
     }
 
     @ReactMethod
-    public void shaBase64(String data, String algorithm, Promise promise) throws Exception {
+    public void hmac256(String data, String pwd, Promise promise) {
         try {
-            byte[] digest = this.sha(Base64.decode(data, Base64.NO_WRAP), algorithm);
-            promise.resolve(Base64.encodeToString(digest, Base64.NO_WRAP));
+            String strs = hmac256(data, pwd);
+            promise.resolve(strs);
         } catch (Exception e) {
             promise.reject("-1", e.getMessage());
         }
     }
 
-    @ReactMethod
-    public void shaUtf8(String data, String algorithm, Promise promise) throws Exception {
-        try {
-            byte[] digest = this.sha(data.getBytes(), algorithm);
-            promise.resolve(Util.bytesToHex(digest));
-        } catch (Exception e) {
-            promise.reject("-1", e.getMessage());
-        }
+    private static String hmac256(String text, String key) throws NoSuchAlgorithmException, InvalidKeyException  {
+        byte[] contentData = Hex.decode(text);
+        byte[] akHexData = Hex.decode(key);
+        Mac sha256_HMAC = Mac.getInstance(HMAC_SHA_256);
+        SecretKey secret_key = new SecretKeySpec(akHexData, HMAC_SHA_256);
+        sha256_HMAC.init(secret_key);
+        return Util.bytesToHex(sha256_HMAC.doFinal(contentData));
     }
 }
