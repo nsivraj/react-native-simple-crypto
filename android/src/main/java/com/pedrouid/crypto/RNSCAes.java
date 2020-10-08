@@ -46,18 +46,18 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.bridge.Callback;
 
-public class RCTAes extends ReactContextBaseJavaModule {
+public class RNSCAes extends ReactContextBaseJavaModule {
 
     private static final String CIPHER_ALGORITHM = "AES/CBC/PKCS7Padding";
     private static final String KEY_ALGORITHM = "AES";
 
-    public RCTAes(ReactApplicationContext reactContext) {
+    public RNSCAes(ReactApplicationContext reactContext) {
         super(reactContext);
     }
 
     @Override
     public String getName() {
-        return "RCTAes";
+        return "RNSCAes";
     }
 
     @ReactMethod

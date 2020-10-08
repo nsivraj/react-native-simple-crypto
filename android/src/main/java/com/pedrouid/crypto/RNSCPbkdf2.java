@@ -21,15 +21,15 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RCTPbkdf2 extends ReactContextBaseJavaModule {
+public class RNSCPbkdf2 extends ReactContextBaseJavaModule {
 
-    public RCTPbkdf2(ReactApplicationContext reactContext) {
+    public RNSCPbkdf2(ReactApplicationContext reactContext) {
         super(reactContext);
     }
 
     @Override
     public String getName() {
-        return "RCTPbkdf2";
+        return "RNSCPbkdf2";
     }
 
     @ReactMethod

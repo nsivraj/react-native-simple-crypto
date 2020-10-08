@@ -1,7 +1,7 @@
-#import "RCTPbkdf2.h"
+#import "RNSCPbkdf2.h"
 #import "lib/Pbkdf2.h"
 
-@implementation RCTPbkdf2
+@implementation RNSCPbkdf2
 
 RCT_EXPORT_MODULE()
 

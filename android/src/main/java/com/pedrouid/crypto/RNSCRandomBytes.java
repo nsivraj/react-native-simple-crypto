@@ -13,16 +13,16 @@ import java.util.HashMap;
 
 import android.util.Base64;
 
-class RandomBytesModule extends ReactContextBaseJavaModule {
+class RNSCRandomBytes extends ReactContextBaseJavaModule {
   private static final String SEED_KEY = "seed";
 
-  public RandomBytesModule(ReactApplicationContext reactContext) {
+  public RNSCRandomBytes(ReactApplicationContext reactContext) {
     super(reactContext);
   }
 
   @Override
   public String getName() {
-    return "RNRandomBytes";
+    return "RNSCRandomBytes";
   }
 
   @ReactMethod

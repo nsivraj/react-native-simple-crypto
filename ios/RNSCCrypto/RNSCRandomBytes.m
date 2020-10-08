@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Facebook. All rights reserved.
 //
 
-#import "RNRandomBytes.h"
+#import "RNSCRandomBytes.h"
 #if __has_include(<React/RCTBridgeModule.h>)
 #import <React/RCTBridgeModule.h>
 #elif __has_include("RCTBridgeModule.h")
@@ -15,7 +15,7 @@
 #import "React/RCTBridgeModule.h" // Required when used as a Pod in a Swift project
 #endif
 
-@implementation RNRandomBytes
+@implementation RNSCRandomBytes
 
 RCT_EXPORT_MODULE()
 
@@ -26,7 +26,7 @@ RCT_EXPORT_METHOD(randomBytes:(NSUInteger)length
                   rejecter:(RCTPromiseRejectBlock)reject)
 {
     NSError *error = nil;
-    NSString *base64 = [RNRandomBytes randomBytes:length];
+    NSString *base64 = [RNSCRandomBytes randomBytes:length];
     if (base64 == nil) {
         reject(@"random_bytes failed", @"Random bytes error", error);
     } else {
@@ -44,7 +44,7 @@ RCT_EXPORT_METHOD(randomBytes:(NSUInteger)length
 + (NSDictionary *)constantsToExport
 {
     return @{
-        @"seed": [RNRandomBytes randomBytes:4096]
+        @"seed": [RNSCRandomBytes randomBytes:4096]
     };
 };
 
