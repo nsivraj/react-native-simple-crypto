@@ -286,32 +286,50 @@ public class RSA {
     }
 
     public void generate(int keySize) throws IOException, NoSuchAlgorithmException, InvalidAlgorithmParameterException {
-        KeyPairGenerator kpg = KeyPairGenerator.getInstance(ALGORITHM);
-        kpg.initialize(keySize);
+        generateWithSeed(keySize, null);
+    }
 
+    public void generateWithSeed(int keySize, byte[] seedBytes) throws IOException, NoSuchAlgorithmException, InvalidAlgorithmParameterException {
+        KeyPairGenerator kpg = KeyPairGenerator.getInstance(ALGORITHM);
+        if(seedBytes == null) {
+            kpg.initialize(keySize);
+        } else {
+            SecureRandom seedRandom = new SecureRandom(seedBytes);
+            kpg.initialize(keySize, seedRandom);
+        }
         KeyPair keyPair = kpg.genKeyPair();
         this.publicKey = keyPair.getPublic();
         this.privateKey = keyPair.getPrivate();
     }
+
+
 
     public void generate(String keyTag, Context context) throws IOException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, NoSuchProviderException {
         this.generate(keyTag, 2048, context);
     }
 
     public void generate(String keyTag, int keySize, Context context) throws IOException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, NoSuchProviderException {
+        generateWithSeed(keyTag, keySize, context, null);
+    }
+
+    public void generateWithSeed(String keyTag, int keySize, Context context, byte[] seedBytes) throws IOException, NoSuchAlgorithmException, InvalidAlgorithmParameterException, NoSuchProviderException {
         KeyPairGenerator kpg = KeyPairGenerator.getInstance(ALGORITHM, "AndroidKeyStore");
         if (android.os.Build.VERSION.SDK_INT >= 23) {
-            kpg.initialize(
-                new KeyGenParameterSpec.Builder(
+            KeyGenParameterSpec.Builder keyGenParameterSpec = new KeyGenParameterSpec.Builder(
                     keyTag,
                     PURPOSE_ENCRYPT | PURPOSE_DECRYPT | PURPOSE_SIGN | PURPOSE_VERIFY
                 )
                 .setKeySize(keySize)
                 .setDigests(KeyProperties.DIGEST_SHA512)
                 .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_RSA_PKCS1)
-                .setSignaturePaddings(KeyProperties.SIGNATURE_PADDING_RSA_PKCS1)
-                .build()
-            );
+                .setSignaturePaddings(KeyProperties.SIGNATURE_PADDING_RSA_PKCS1);
+
+            if(seedBytes == null) {
+                kpg.initialize(keyGenParameterSpec.build());
+            } else {
+                SecureRandom seedRandom = new SecureRandom(seedBytes);
+                kpg.initialize(keyGenParameterSpec.build(), seedRandom);
+            }
         } else {
             Calendar endDate = Calendar.getInstance();
             endDate.add(Calendar.YEAR, 1);
@@ -326,7 +344,13 @@ public class RSA {
             if (android.os.Build.VERSION.SDK_INT >= 19) {
                 keyPairGeneratorSpec.setKeySize(keySize).setKeyType(ALGORITHM);
             }
-            kpg.initialize(keyPairGeneratorSpec.build());
+
+            if(seedBytes == null) {
+                kpg.initialize(keyPairGeneratorSpec.build());
+            } else {
+                SecureRandom seedRandom = new SecureRandom(seedBytes);
+                kpg.initialize(keyPairGeneratorSpec.build(), seedRandom);
+            }
         }
 
         KeyPair keyPair = kpg.genKeyPair();

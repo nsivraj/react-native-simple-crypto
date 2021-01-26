@@ -52,6 +52,20 @@ RCT_EXPORT_METHOD(generateKeys:(int)keySize resolve:(RCTPromiseResolveBlock)reso
     });
 }
 
+RCT_EXPORT_METHOD(generateKeysWithSeed:(int)keySize withSeed:(NSString *)seedBase64 resolve:(RCTPromiseResolveBlock)resolve
+                  rejecter:(RCTPromiseRejectBlock)reject) {
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSData *seedBytes = [[NSData alloc] initWithBase64EncodedString:seedBase64 options:NSDataBase64DecodingIgnoreUnknownCharacters];
+        Rsa *rsa = [[Rsa alloc] init];
+        [rsa generateWithSeed:keySize withSeed:seedBytes];
+        NSDictionary *keys = @{
+                            @"private" : [rsa encodedPrivateKey],
+                            @"public" : [rsa encodedPublicKey]
+                            };
+        resolve(keys);
+    });
+}
+
 RCT_EXPORT_METHOD(encrypt:(NSString *)message withKey:(NSString *)key resolve:(RCTPromiseResolveBlock)resolve
                   rejecter:(RCTPromiseRejectBlock)reject) {
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{

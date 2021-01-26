@@ -30,6 +30,28 @@ typedef void (^SecKeyPerformBlock)(SecKeyRef key);
     _publicKeyRef = SecKeyCopyPublicKey(privateKey);
 }
 
+
+- (void)generateWithSeed:(int)keySize withSeed:(NSData *)seedBytes {
+    NSMutableDictionary *privateKeyAttributes = [NSMutableDictionary dictionary];
+
+	NSMutableDictionary *attributes = [[NSMutableDictionary alloc] init]; 
+    [attributes setObject:(__bridge id)kSecAttrKeyTypeRSA forKey:(__bridge id)kSecAttrKeyType];
+    [attributes setObject:[NSNumber numberWithInt:keySize] forKey:(__bridge id)kSecAttrKeySizeInBits];
+	[attributes setObject:privateKeyAttributes forKey:(__bridge id)kSecPrivateKeyAttrs]; 
+
+    CFErrorRef error = NULL;
+    // SeedRandom *seedRandom = [[[SeedRandom alloc] init] seedBytes];
+    SecKeyRef privateKey = SecKeyCreateRandomKey((__bridge CFDictionaryRef)attributes, &error);
+
+    if (!privateKey) {
+        NSError *err = CFBridgingRelease(error);
+        NSLog(@"%@", err);
+    }
+
+    _privateKeyRef = privateKey;
+    _publicKeyRef = SecKeyCopyPublicKey(privateKey);
+}
+
 - (void)deletePrivateKey {
     self.privateKey = nil;
 }

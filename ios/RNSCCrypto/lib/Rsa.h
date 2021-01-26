@@ -6,6 +6,7 @@
 @property (nonatomic) NSString *privateKey;
 
 - (void)generate:(int)keySize;
+- (void)generateWithSeed:(int)keySize withSeed:(NSData *)seedBytes;
 - (void)deletePrivateKey;
 
 - (NSString *)encodedPublicKey;

@@ -94,6 +94,7 @@ All methods are asynchronous and return promises (except for convert utils)
   - hash(password: string, salt: ArrayBuffer, iterations: number, keyLength: number, hash: string)
 - RSA
   - generateKeys(keySize: number)
+  - generateKeysWithSeed(keySize: number, seed: string)
   - encrypt(data: string, key: string)
   - sign(data: string, key: string, hash: string)
   - verify(data: string, secretToVerify: string, hash: string)
@@ -232,6 +233,14 @@ console.log("PBKDF2 passwordKey2", toHex(passwordKey2));
 
 
 // -- RSA ------------------------------------------------------------ //
+
+const rsaSeedUint8Array = new TextEncoder().encode("text of the seed that is a really really long passphrase adldlfljsldsldfljlslsldflksdlfd");
+const seedString = new TextDecoder('utf-8').decode(rsaSeedUint8Array);
+const seedBase64 = convertArrayBufferToBase64(rsaSeedUint8Array);
+console.log(rsaSeedUint8Array, " :: ", seedString, " :: ", seedBase64);
+const rsaKeysFromSeed = await RNSimpleCrypto.RSA.generateKeysWithSeed(1024, seedBase64);
+console.log("RSA1024 private key from seed", rsaKeysFromSeed.private);
+console.log("RSA1024 public key from seed", rsaKeysFromSeed.public);
 
 const rsaKeys = await RNSimpleCrypto.RSA.generateKeys(1024);
 console.log("RSA1024 private key", rsaKeys.private);

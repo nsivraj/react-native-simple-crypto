@@ -71,6 +71,29 @@ public class RNSCRsa extends ReactContextBaseJavaModule {
       }
     });
   }
+  
+  @ReactMethod
+  public void generateKeysWithSeed(final int keySize, final String seedBase64, final Promise promise) {
+    AsyncTask.execute(new Runnable() {
+      @Override
+      public void run() {
+        WritableNativeMap keys = new WritableNativeMap();
+
+        try {
+          byte[] seedBytes = Base64.decode(seedBase64, Base64.DEFAULT);
+          RSA rsa = new RSA();
+          rsa.generateWithSeed(keySize, seedBytes);
+          keys.putString("public", rsa.getPublicKey());
+          keys.putString("private", rsa.getPrivateKey());
+          promise.resolve(keys);
+        } catch (NoSuchAlgorithmException e) {
+          promise.reject("Error", e.getMessage());
+        } catch (Exception e) {
+          promise.reject("Error", e.getMessage());
+        }
+      }
+    });
+  }
 
   @ReactMethod
   public void encrypt(final String message, final String publicKeyString, final Promise promise) {

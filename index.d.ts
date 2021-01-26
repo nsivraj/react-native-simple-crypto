@@ -48,6 +48,7 @@ declare module "react-native-simple-crypto" {
 
   export namespace RSA {
     export function generateKeys(keySize: number): Promise<KeyPair>;
+    export function generateKeysWithSeed(keySize: number, seed: string): Promise<KeyPair>;
     export function encrypt(data: string, key: string): Promise<string>;
     export function decrypt(data: string, key: string): Promise<string>;
     export function sign(
